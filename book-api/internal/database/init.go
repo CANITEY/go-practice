@@ -2,11 +2,7 @@ package database
 
 import (
 	"database/sql"
-	"errors"
-	"fmt"
 	"log"
-	"os"
-	"path/filepath"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -14,12 +10,6 @@ import (
 var db, err = sql.Open("sqlite3", "books.db")
 
 func init() {
-	ex, _ := os.Executable()
-	path := filepath.Dir(ex)
-	if _, err := os.Stat(fmt.Sprintf("%vbooks.db", path)); errors.Is(err, os.ErrNotExist) {
-		return
-	}
-
 	if err := createTable(); err != nil {
 		log.Panic(err)
 	}

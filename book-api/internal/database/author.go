@@ -28,7 +28,7 @@ func AddAuthor(name string) (error) {
 
 //View author function
 func ViewAuthor(id int) (api.Author, error) {
-	rows, err := db.Query("SELECT authors.id, authors.name, books.title from authors INNER JOIN books ON authors.id=books.authorID where authors.id=?", id)
+	rows, err := db.Query("SELECT authors.id, authors.name, books.title from authors LEFT JOIN books ON authors.id=books.authorID where authors.id=?", id)
 	if err != nil {
 		return api.Author{}, err
 	}
@@ -38,12 +38,15 @@ func ViewAuthor(id int) (api.Author, error) {
 	var idResult int
 
 	for rows.Next() {
-		var title string
+		var title interface{}
 		err := rows.Scan(&idResult, &name, &title)
 		if err != nil {
 			return api.Author{}, err
 		}
-		books = append(books, title)
+		if title == nil {
+			continue
+		}
+		books = append(books, title.(string))
 	}
 
 	result := api.Author{
