@@ -4,7 +4,7 @@ is a script that orginze directories by creating a directory for every extension
 
 # installation
 ```bash
-go install 
+go install github.com/CANITEY/go-practice/tree/main/organizer
 ```
 
 # usage
